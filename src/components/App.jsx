@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import List from "./List/List";
-import { fetchNews } from "../services/api";
+import ImageGallery from "./ImageGallery/ImageGallery";
+import { fetchData } from "../services/api";
 import { SearchBar } from "./SearchBar/SearchBar";
 import { LineWave } from "react-loader-spinner";
 
 export const App = () => {
-  const [hits, setHits] = useState([]);
-  const [query, setQuery] = useState("react");
+  const [images, setImages] = useState([]);
+  const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [page, setPage] = useState(0);
@@ -17,8 +17,10 @@ export const App = () => {
       try {
         setIsLoading(true);
         setIsError(false);
-        const response = await fetchNews(query, 5);
-        setHits((prev) => [...prev, ...response.hits]);
+        const response = await fetchData(query, 5);
+        console.log(response);
+        console.log(response.results.color);
+        setImages((prev) => [...prev, ...response.results]);
         setTotal(response.nbPages);
       } catch (error) {
         console.log(error);
@@ -30,15 +32,16 @@ export const App = () => {
     getData();
   }, [query, page]);
 
-
   const handleSetQuery = (query) => {
     setQuery(query);
-    setHits([]);
+    setImages([]);
     setPage(0);
   };
   return (
     <div>
-      {total > page && !isLoading && <button onClick={() => setPage((prev) => prev + 1)}>Load more</button>]}
+      {total > page && !isLoading && (
+        <button onClick={() => setPage((prev) => prev + 1)}>Load more</button>
+      )}
       <SearchBar setQuery={handleSetQuery} />
       {isLoading && (
         <LineWave
@@ -55,8 +58,7 @@ export const App = () => {
         />
       )}
       {isError && <p>Something went wrong! Try again...</p>}
-      <List items={hits} />
-      
+      <ImageGallery items={images} />
     </div>
   );
 };

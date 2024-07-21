@@ -1,9 +1,13 @@
 import axios from "axios";
-export const fetchNews = async (query, page = 0, perPage = 5) => {
-  const response = await axios.get(`https://hn.algolia.com/api/v1/search`, {
+
+export const fetchData = async (ApiKey, query, page) => {
+  const BaseURL = "https://api.unsplash.com/search/photos";
+  const response = await axios.get(`${BaseURL}?client_id=${ApiKey}`, {
     params: {
-      query,
-      hitsPerPage: perPage,
+      query: query,
+      client_id: "a_gumy9lx_kt3Hq5T_VL-Nfm7N5sI8vLs64Te8qEDXo",
+      per_page: "10",
+      page: page,
     },
   });
   return response.data;

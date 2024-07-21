@@ -13,7 +13,13 @@ export const SearchBar = ({ setQuery }) => {
     <div>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <Form>
-          <Field name="query" placeholder="Enter" type="search" />
+          <Field
+            name="query"
+            placeholder="Search images and photos"
+            type="text"
+            autoComplete="off"
+            autoFocus
+          />
           <button type="submit">Search</button>
         </Form>
       </Formik>
